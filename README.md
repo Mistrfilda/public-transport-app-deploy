@@ -185,3 +185,51 @@ Create admin user
 ```bash
 bin/console user:create "Filip" "Mistrfilda" "filda.kuchar@seznam.cz" "password"
 ```
+
+## Crontab
+
+Generate every 3 minutes prague vehicle positions and download new stop times every midnight
+
+```bash
+*/3 5-22 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":false,"generateVehiclePositions":true}' '{}'
+5 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":true,"generateVehiclePositions":false}' '{}'
+```
+
+## Supervisor for queues
+
+```bash
+sudo apt install supervisor
+```
+
+
+Departure table consumer 
+
+```bash
+sudo nano /etc/supervisor/conf.d/departure-table-consumer.conf
+```
+
+```bash
+[program:departure_table_consumer]
+command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueDepartureTableConsumer 300
+user=deployer
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/supervisor/departure.table.er.log
+stdout_logfile=/var/log/supervisor/departure.table.out.log
+```
+
+Vehicle position consumer
+
+```bash
+sudo nano /etc/supervisor/conf.d/vehicle-position-consumer.conf
+```
+
+```bash
+[program:vehicle_position_consumer]
+command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueVehiclePositionConsumer 300
+user=deployer
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/supervisor/vehicle.position.table.er.log
+stdout_logfile=/var/log/supervisor/vehicle.position.out.log
+```
