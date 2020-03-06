@@ -12,6 +12,7 @@ set('shared_dirs', ['log']);
 set('shared_files', ['config/config.local.neon']);
 set('writable_dirs', ['log', 'temp']);
 set('copy_dirs', ['node_modules', 'vendor']);
+set('keep_releases', 3);
 
 localhost('localhost')
 	->user('deployer');
