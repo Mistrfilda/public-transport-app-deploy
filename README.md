@@ -2,6 +2,8 @@
 
 Deploy is divided into second project, since my Raspberry PI runs only in my network :)
 
+- Simple unifi [dns forwarding ](.docs/unifi.md)
+
 # Raspberry pi instalation
 
 Run on localhost
