@@ -6,6 +6,15 @@ Deploy is divided into second project, since my Raspberry PI runs only in my net
 
 Run on localhost
 
+
+It's better to disable swap to be used on raspbbery pi (reboot is required)
+```bash
+sudo systemctl disable dphys-swapfile.service
+sudo reboot
+```
+
+
+Update before running anything else
 ```bash
 sudo apt-get update
 sudo apt-get upgrade
@@ -195,7 +204,7 @@ Generate every 3 minutes prague vehicle positions and download new stop times ev
 5 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":true,"generateVehiclePositions":false}' '{}'
 ```
 
-## Supervisor for queues (use sudo)
+## Supervisor for queues
 
 ```bash
 sudo apt install supervisor
@@ -233,6 +242,23 @@ autorestart=true
 stderr_logfile=/var/log/supervisor/vehicle.position.table.er.log
 stdout_logfile=/var/log/supervisor/vehicle.position.out.log
 ```
+
+```bash
+sudo supervisorctl reread
+sudo supervisorctl update
+```
+
+Usefull comands
+```bash
+sudo supervisorctl
+departure_table_consumer         RUNNING   pid 1222, uptime 0:04:19
+vehicle_position_consumer        RUNNING   pid 1223, uptime 0:04:19
+supervisor> start departure_table_consumer 
+supervisor> stop departure_table_consumer 
+supervisor> restart departure_table_consumer
+```
+
+
 
 
 #Deployer
