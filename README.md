@@ -186,7 +186,7 @@ Create admin user
 bin/console user:create "Filip" "Mistrfilda" "filda.kuchar@seznam.cz" "password"
 ```
 
-## Crontab
+## Crontab (runs as deployer user)
 
 Generate every 3 minutes prague vehicle positions and download new stop times every midnight
 
@@ -195,7 +195,7 @@ Generate every 3 minutes prague vehicle positions and download new stop times ev
 5 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":true,"generateVehiclePositions":false}' '{}'
 ```
 
-## Supervisor for queues
+## Supervisor for queues (use sudo)
 
 ```bash
 sudo apt install supervisor
