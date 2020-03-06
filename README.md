@@ -233,3 +233,58 @@ autorestart=true
 stderr_logfile=/var/log/supervisor/vehicle.position.table.er.log
 stdout_logfile=/var/log/supervisor/vehicle.position.out.log
 ```
+
+
+#Deployer
+
+Prerequisites: configured deployer user
+
+In this project, you can find simple Deployer.php configuration (https://deployer.org/)
+
+Setup:
+
+```bash
+sudo su - deployer
+cd
+git clone https://github.com/Mistrfilda/public-transport-app-deploy.git deploy
+cd deploy/
+composer install
+```
+
+Create folder for deployer
+```bash
+cd /var/www
+mkdir deployer
+chown -R deployer:www-data deployer
+```
+
+After that simply run  - suggestion: on first run go to deploy.php file and comment line with run('yarn install') - first run will always fail
+
+```bash
+cd /deploy
+vendor/bin/dep deploy
+```
+
+After that, it is neccesary to go to releases folder and set config/config.local.neon in shared directory
+
+```bash
+cd /var/www/deployer/public-transport-app/config
+nano config.local.neon
+```
+
+Fill it with parameters specified in first section of this readme.
+
+After that, run deploy once more
+
+```bash
+cd /deploy
+vendor/bin/dep deploy
+```
+
+If everything went smooth, now its time to create symlink - directory in www/sites must be deleted if exists before creating symlink
+
+```bash
+ln -s /var/www/deployer/public-transport-app/current /var/www/sites/kuchar-pid.cz
+```
+
+And thats it! Now it is possible to simply deploy with one command!
