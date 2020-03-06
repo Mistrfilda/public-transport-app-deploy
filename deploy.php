@@ -13,14 +13,14 @@ set('shared_files', ['config/config.local.neon']);
 set('writable_dirs', ['log', 'temp']);
 set('copy_dirs', ['node_modules', 'vendor']);
 
-localhost('localhost1')
+localhost('localhost')
 	->user('deployer');
 
 task('deploy:build', function() {
 	cd('{{release_path}}');
 
 	run('composer install');
-	run('yarn install');
+	run('yarn install', ['timeout' => 1000]);
 
 	run('composer deploy-prod');
 });
