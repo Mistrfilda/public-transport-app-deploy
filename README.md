@@ -3,13 +3,13 @@
 Deploy is divided into second project, since my Raspberry PI runs only in my network :)
 
 - Simple unifi [dns forwarding ](.docs/unifi.md)
+- My  [Raspberry pi](.docs/raspberry-pi.md)
 
 # Raspberry pi instalation
 
 Run on localhost
 
-
-It's better to disable swap to be used on raspbbery pi (reboot is required)
+If you are using raspbbery pi with sd card - It's better to disable swap to be used on raspbbery pi (reboot is required)
 ```bash
 sudo systemctl disable dphys-swapfile.service
 sudo reboot
@@ -69,14 +69,14 @@ sudo nano mysite-pid.conf
 
 Enable virtualhost
 ```bash
-sudo a2dissite mysite-pid.conf
+sudo a2ensite mysite-pid.conf
 sudo systemctl restart apache2
 ```
 
 PHP config
 ```bash
 sudo apt-get install php-mysql
-sudo nano /etc/php/7.3/php.ini
+sudo nano /etc/php/7.3/apache2/php.ini
 ```
 
 Enable these lines:
@@ -110,7 +110,11 @@ Create deployer user
 ```bash
 sudo useradd deployer
 sudo usermod -a -G www-data deployer
+
+sudo mkdir /home/deployer && sudo chown -R deployer:deployer /home/deployer
 ```
+
+You can also copy contents of .bash_profile or .bashrc into deployer .bash_profile
 
 Create project folder and change ownership
 ```bash
@@ -120,15 +124,29 @@ sudo chown -R deployer:www-data /var/www/sites
 
 Install composer + yarn
 ```bash
-sudo apt install composer
+sudo apt install composer -y
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt update && sudo apt install yarn
+sudo apt update && sudo apt install yarn -y
 ```
+
+Install Mysql
+```bash
+sudo apt install mariadb-server -y
+sudo mysql
+```
+
+```mysql
+GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
+
+Now you can connect to mysql database from your favourite gui :D and create db and user for project.
+
 
 Install rabbitmq and enable full admin access (insecure but since our PI is only in local network :D)
 ```bash
-sudo apt install rabbitmq-server
+sudo apt install rabbitmq-server -y
 sudo systemctl enable rabbitmq-server
 sudo systemctl start rabbitmq-server
 sudo rabbitmq-plugins enable rabbitmq_management
@@ -147,6 +165,7 @@ git clone https://github.com/Mistrfilda/public-transport-app.git kuchar-pid.cz/
 
 Set acl for temp and log folder
 ```bash
+sudo mkdir /var/www/sites
 sudo chown -R deployer:www-data /var/www/sites
 sudo setfacl -dR -m u:www-data:rwX -m u:deployer:rwX log/
 sudo setfacl -R -m u:www-data:rwX -m u:deployer:rwX log/
@@ -209,7 +228,7 @@ Generate every 3 minutes prague vehicle positions and download new stop times ev
 # Supervisor for queues
 
 ```bash
-sudo apt install supervisor
+sudo apt install supervisor -y
 ```
 
 
@@ -279,11 +298,11 @@ cd deploy/
 composer install
 ```
 
-Create folder for deployer
+Create folder for deployer and install acl (run as user with sudo)
 ```bash
-cd /var/www
-mkdir deployer
-chown -R deployer:www-data deployer
+sudo mkdir /var/www/deployer
+sudo chown -R deployer:www-data /var/www/deployer
+sudo apt install acl -y
 ```
 
 After that simply run  - suggestion: on first run go to deploy.php file and comment line with run('yarn install') - first run will always fail
