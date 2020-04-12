@@ -20,7 +20,7 @@ localhost('localhost')
 task('deploy:build', function() {
 	cd('{{release_path}}');
 
-	run('composer install');
+	run('composer install -o');
 	run('yarn install', ['timeout' => 1000]);
 
 	run('composer deploy-prod');
