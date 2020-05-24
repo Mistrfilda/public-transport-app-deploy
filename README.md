@@ -218,10 +218,10 @@ bin/console user:create "Filip" "Mistrfilda" "filda.kuchar@seznam.cz" "password"
 
 # Crontab (runs as deployer user)
 
-Generate every 3 minutes prague vehicle positions, download new stop times and stops every midnight and generate statistics
+Generate every 3 minutes prague vehicle positions, download new stop times and stops every midnight and generate statistics. Statistics should be generated every night. 
 
 ```bash
-*/3 5-22 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":false,"generateVehiclePositions":true}' '{}'
+*/3 5-23 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":false,"generateVehiclePositions":true}' '{}'
 5 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":true,"generateVehiclePositions":false}' '{}'
 50 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console prague:statistic:generate 2
 10 1 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console  prague:import:stop
