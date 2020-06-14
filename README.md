@@ -24,16 +24,25 @@ sudo apt-get update
 sudo apt-get upgrade
 ```
 
-Apache instalation
+Apache instalation (for php 7.3)
 ```bash
 sudo apt install apache2 -y
 sudo apt install php libapache2-mod-php -y
 ```
 
+PHP 7.4
+```bash
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ buster main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
+sudo apt upgrade
+sudo apt install php7.4 php7.4-common php7.4-mysql php7.4-cli
+```
+
 Setup virtualhost
 
 ```bash
-cd /etc/apache2/site-available
+cd /etc/apache2/sites-available
 sudo nano mysite-pid.conf
 ```
 
@@ -124,9 +133,12 @@ sudo mkdir /var/www/sites/kuchar-pid.cz
 sudo chown -R deployer:www-data /var/www/sites
 ```
 
-Install composer + yarn
+Install composer + node js+ yarn
 ```bash
 sudo apt install composer -y
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt update && sudo apt install yarn -y
@@ -337,3 +349,17 @@ ln -s /var/www/deployer/public-transport-app/current /var/www/sites/kuchar-pid.c
 ```
 
 And thats it! Now it is possible to simply deploy with one command!
+
+# Stop all services
+```bash
+sudo systemctl stop rabbitmq-server
+sudo systemctl stop mysql
+sudo systemctl stop apache2
+```
+
+or to not start at all
+```bash
+sudo systemctl disable rabbitmq-server
+sudo systemctl disable apache2
+sudo systemctl disable mysql
+```
