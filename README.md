@@ -144,6 +144,25 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt update && sudo apt install yarn -y
 ```
 
+This project uses node-sass package but this package is not supported on arm procesors out of box. Best way how to solve this is to create some random folder (for example in home directory) and install node-sass package there.
+
+```bash
+cd
+npm install node-sass
+```
+
+After successfull installation and build, use path to builded binging.node in /etc/enviroment
+
+```bash
+sudo nano /etc/enviroment
+```
+
+Put something like this there
+
+```bash
+SASS_BINARY_PATH=/home/deployer/node-sass-cache/node_modules/node-sass/build/Release/obj.target/binding.node
+```
+
 Install Mysql
 ```bash
 sudo apt install mariadb-server -y
