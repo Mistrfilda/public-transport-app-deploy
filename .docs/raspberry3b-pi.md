@@ -1,4 +1,4 @@
-# My raspberry pi
+# My raspberry pi 3b (old one)
 
 - Rpi 3 B+ (1 gb ram)
 - Boot from ssd
