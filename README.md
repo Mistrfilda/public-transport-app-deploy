@@ -279,6 +279,7 @@ command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueDepartu
 user=deployer
 autostart=true
 autorestart=true
+startretries=10
 stderr_logfile=/var/log/supervisor/departure.table.er.log
 stdout_logfile=/var/log/supervisor/departure.table.out.log
 ```
@@ -295,6 +296,7 @@ command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueVehicle
 user=deployer
 autostart=true
 autorestart=true
+startretries=10
 stderr_logfile=/var/log/supervisor/vehicle.position.table.er.log
 stdout_logfile=/var/log/supervisor/vehicle.position.out.log
 ```
