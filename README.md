@@ -301,6 +301,40 @@ stderr_logfile=/var/log/supervisor/vehicle.position.table.er.log
 stdout_logfile=/var/log/supervisor/vehicle.position.out.log
 ```
 
+Parking lots consumer
+
+```bash
+sudo nano /etc/supervisor/conf.d/parking-lot-consumer.conf
+```
+
+```bash
+[program:vehicle_position_consumer]
+command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueParkingLotConsumer 300
+user=deployer
+autostart=true
+autorestart=true
+startretries=10
+stderr_logfile=/var/log/supervisor/parking.lot.table.er.log
+stdout_logfile=/var/log/supervisor/parking.lot.out.log
+```
+
+Transport restrictions consumer
+
+```bash
+sudo nano /etc/supervisor/conf.d/tranposrt-restriction-consumer.conf
+```
+
+```bash
+[program:vehicle_position_consumer]
+command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueTransportRestrictionConsumer 300
+user=deployer
+autostart=true
+autorestart=true
+startretries=10
+stderr_logfile=/var/log/supervisor/transport.restriction.table.er.log
+stdout_logfile=/var/log/supervisor/transport.restriction.out.log
+```
+
 ```bash
 sudo supervisorctl reread
 sudo supervisorctl update
