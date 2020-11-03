@@ -5,7 +5,11 @@ Deploy is divided into second project, since my Raspberry PI runs only in my net
 - Simple unifi [dns forwarding ](.docs/unifi.md)
 - My rpi 4b  [Raspberry pi](.docs/raspberry4b-pi.md)
 - My old rpi 3b  [Raspberry pi](.docs/raspberry3b-pi.md)
-- php 7.4 [upgrade ](.docs/php74.md) 
+- php 7.4 [upgrade ](.docs/php74.md)
+
+# Usefull bash scripts
+
+- [Simple database dump](scripts/database-dump.sh)
 
 # Raspberry pi instalation
 
