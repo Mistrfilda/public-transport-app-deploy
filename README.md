@@ -254,10 +254,11 @@ bin/console user:create "Filip" "Mistrfilda" "filda.kuchar@seznam.cz" "password"
 Generate every 3 minutes prague vehicle positions, download new stop times and stops every midnight and generate statistics. Statistics should be generated every night. 
 
 ```bash
-*/3 5-23 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":false,"generateVehiclePositions":true}' '{}'
-5 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":true,"generateVehiclePositions":false}' '{}'
+*/2 * * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":false,"generateVehiclePositions":true, "generateTransportRestrictions": false, "generateParkingLots": false}' '{}'
+5 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console requests:generate '{"generateDepartureTables":true,"generateVehiclePositions":false, "generateTransportRestrictions": false, "generateParkingLots": false}' '{}'
 50 0 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console prague:statistic:generate 2
 10 1 * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console  prague:import:stop
+*/30 * * * * cd /var/www/sites/kuchar-pid.cz/ && bin/console prague:requests:halfHour
 ```
 
 # Supervisor for queues
@@ -308,7 +309,7 @@ sudo nano /etc/supervisor/conf.d/parking-lot-consumer.conf
 ```
 
 ```bash
-[program:vehicle_position_consumer]
+[program:parking_lot_consumer]
 command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueParkingLotConsumer 300
 user=deployer
 autostart=true
@@ -325,7 +326,7 @@ sudo nano /etc/supervisor/conf.d/tranposrt-restriction-consumer.conf
 ```
 
 ```bash
-[program:vehicle_position_consumer]
+[program:tranposrt_restriction_consumer]
 command=/var/www/sites/kuchar-pid.cz/bin/console rabbitmq:consumer pragueTransportRestrictionConsumer 300
 user=deployer
 autostart=true
