@@ -22,7 +22,7 @@ task('deploy:build', function() {
 
 	run('composer install -o');
 
-	run('composer deploy-prod');
+	run('composer deploy-prod', ['timeout' => 1000]);
 });
 
 task('deploy', [
